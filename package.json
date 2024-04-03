@@ -1,0 +1,17 @@
+{
+  "name": "pass",
+  "version": "1.0.0",
+  "description": "PersonalAttendanceSecureSystem",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "fs": "^0.0.1-security",
+    "https": "^1.0.0",
+    "node-cron": "^3.0.3"
+  }
+}
