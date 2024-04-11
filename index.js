@@ -19,7 +19,6 @@ const server = https.createServer(options, (req, res) => {
         res.end();
     }
     else if (req.method === 'GET') {
-        res.writeHead(200);
         if (req.url.startsWith('/assets/')) {
             let path = req.url;
             if (path.endsWith('/')) {
@@ -31,6 +30,7 @@ const server = https.createServer(options, (req, res) => {
                     res.end('404 Not Found');
                     return;
                 }
+                res.writeHead(200);
                 res.end(data);
             });
         }
@@ -42,16 +42,24 @@ const server = https.createServer(options, (req, res) => {
                 body += chunk.toString();
             });
             req.on('end', () => {
-                console.log(body);
                 let data = JSON.parse(body);
                 res.writeHead(200);
-                if (activeMembers.indexOf(data.id) === -1) {
-                    activeMembers.push(data.id);
-                    res.end({ status: 'success', type: 'entry', members: activeMembers});
+                if (data.type === 'passing') {
+                    if (data.id === '') {
+                        res.end(JSON.stringify({ status: 'failed', type: 'empty', members: activeMembers }));
+                        return;
+                    }
+                    if (!activeMembers.includes(data.id)) {
+                        activeMembers.push(data.id);
+                        res.end(JSON.stringify({ status: 'success', type: 'entry', members: activeMembers }));
+                    }
+                    else {
+                        activeMembers = activeMembers.filter(member => member !== data.id);
+                        res.end(JSON.stringify({ status: 'success', type: 'exit', members: activeMembers }));
+                    }
                 }
-                else {
-                    activeMembers.filter(id => id !== data.id);
-                    res.end({ status: 'success', type: 'exit', members: activeMembers});
+                else if (data.type === 'getMembers') {
+                    res.end(JSON.stringify({ members: activeMembers }));
                 }
             });
         }

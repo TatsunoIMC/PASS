@@ -3,7 +3,6 @@ canvas {
     margin: 0 auto;
     background-color: #000;
     width: 80vmin;
-    height: 80vmin;
     max-width: 800px;
     max-height: 800px;
 }

@@ -48,7 +48,7 @@ function tick() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ id: code.data }),
+                body: JSON.stringify({ type: "passing", id: code.data }),
             };
             fetch('/api', options)
                 .then(res => res.json())
